@@ -4,7 +4,7 @@ from typing import List
 from ..import schemas,database,models
 from sqlalchemy.orm import Session
 
-
+from . import oauth2
 
 router = APIRouter(
     prefix="/blog",
@@ -15,7 +15,7 @@ get_db=database.get_db
 
 
 @router.get('/',response_model=List[schemas.ShowBlog],)
-def all(db: Session=Depends(database.get_db)):
+def all(db: Session=Depends(database.get_db),current_user: schemas.AppUser=Depends(oauth2.get_current_user)):
     blogs =db.query(models.Blog).all()
     return blogs
 

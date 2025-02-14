@@ -28,8 +28,10 @@ def create(request: schemas.AppUser,db: Session=Depends(get_db)):
     db.refresh(newuser)
     return newuser
 
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+
 @router.post('/login')
-def login(request: schemas.Login, db: Session=Depends(get_db)):
+def login(request: OAuth2PasswordRequestForm=Depends(), db: Session=Depends(get_db)):
     user=db.query(models.AppUser).filter(models.AppUser.email==request.username).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Invalid Credentials")    
