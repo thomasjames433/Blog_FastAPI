@@ -7,7 +7,7 @@ class BlogBase(BaseModel):
 
 class Blog(BlogBase):
     class Config:
-        orm_mode = True
+        from_attributes = True  # ✅ Use this in Pydantic v2
 
 
 class AppUser(BaseModel):
